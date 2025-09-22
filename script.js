@@ -16,18 +16,18 @@ document.addEventListener('DOMContentLoaded', function() {
     checkAuthenticationStatus();
 });
 
-// Check if user is already authenticated (session storage)
+// Check if user is already authenticated (localStorage for persistence)
 function checkAuthenticationStatus() {
-    const authSession = sessionStorage.getItem('isAuthenticated');
-    const sessionExpiry = sessionStorage.getItem('sessionExpiry');
+    const authSession = localStorage.getItem('isAuthenticated');
+    const sessionExpiry = localStorage.getItem('sessionExpiry');
     
     if (authSession === 'true' && sessionExpiry && new Date().getTime() < parseInt(sessionExpiry)) {
         // User is still authenticated
         showMainContent();
     } else {
         // Clear expired session
-        sessionStorage.removeItem('isAuthenticated');
-        sessionStorage.removeItem('sessionExpiry');
+        localStorage.removeItem('isAuthenticated');
+        localStorage.removeItem('sessionExpiry');
         showLoginModal();
     }
 }
@@ -43,6 +43,22 @@ function showMainContent() {
     document.getElementById('loginModal').style.display = 'none';
     document.getElementById('mainContent').style.display = 'block';
     isAuthenticated = true;
+}
+
+// Logout function
+function logout() {
+    localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('sessionExpiry');
+    localStorage.removeItem('loginTime');
+    clearStoredOTP();
+    isAuthenticated = false;
+    showLoginModal();
+    
+    // Reset login form
+    document.getElementById('otpInput').value = '';
+    document.getElementById('verifySection').style.display = 'none';
+    document.getElementById('otpSentMessage').style.display = 'none';
+    document.getElementById('otpError').style.display = 'none';
 }
 
 // Generate 6-digit OTP
@@ -187,10 +203,11 @@ async function verifyOTP() {
             // Delete used OTP
             clearStoredOTP();
             
-            // Set session (expires in 1 hour)
-            const sessionExpiry = new Date().getTime() + (60 * 60 * 1000);
-            sessionStorage.setItem('isAuthenticated', 'true');
-            sessionStorage.setItem('sessionExpiry', sessionExpiry.toString());
+            // Set persistent session (expires in 24 hours)
+            const sessionExpiry = new Date().getTime() + (24 * 60 * 60 * 1000);
+            localStorage.setItem('isAuthenticated', 'true');
+            localStorage.setItem('sessionExpiry', sessionExpiry.toString());
+            localStorage.setItem('loginTime', new Date().toLocaleString());
             
             // Show main content
             showMainContent();
@@ -219,6 +236,9 @@ function showError(message) {
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('sendOtpBtn').addEventListener('click', sendOTP);
     document.getElementById('verifyOtpBtn').addEventListener('click', verifyOTP);
+    
+    // Logout button event listener
+    document.getElementById('logoutBtn').addEventListener('click', logout);
     
     // Allow Enter key to verify OTP
     document.getElementById('otpInput').addEventListener('keypress', function(e) {
