@@ -5,53 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Telugu Commercial Ad Generator</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- EmailJS CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 </head>
 <body>
-    <!-- Login Modal -->
-    <div id="loginModal" class="login-modal">
-        <div class="login-container">
-            <div class="login-header">
-                <h2>🔐 Admin Login</h2>
-                <p>Two-Factor Authentication Required</p>
-            </div>
-            
-            <div class="login-form">
-                <div class="otp-section">
-                    <h3>Step 1: Request OTP</h3>
-                    <p>Click the button below to send a 6-digit OTP to the admin email.</p>
-                    <button id="sendOtpBtn" class="btn btn-primary">📧 Send OTP</button>
-                    <div id="otpSentMessage" class="message success" style="display: none;">
-                        ✅ OTP sent successfully! Check your email.
-                    </div>
-                </div>
-                
-                <div class="verify-section" id="verifySection" style="display: none;">
-                    <h3>Step 2: Verify OTP</h3>
-                    <div class="form-group">
-                        <label for="otpInput">Enter 6-digit OTP:</label>
-                        <input type="text" id="otpInput" maxlength="6" placeholder="000000" class="otp-input">
-                    </div>
-                    <button id="verifyOtpBtn" class="btn btn-secondary">🔓 Verify OTP</button>
-                    <div id="otpError" class="message error" style="display: none;"></div>
-                </div>
-                
-                <div class="loading-spinner" id="loginLoading" style="display: none;">
-                    <div class="spinner"></div>
-                    <p>Processing...</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Main Application Content -->
-    <div id="mainContent" style="display: none;">
+    <div id="mainContent">
     <div class="container">
         <header>
             <h1>🎬 Telugu Commercial Ad Generator</h1>
             <p>Create professional Telugu voice-over scripts and scene descriptions</p>
-            <button id="logoutBtn" class="logout-btn">🚪 Logout</button>
         </header>
 
         <!-- Section 1: Voice Over Generation -->
